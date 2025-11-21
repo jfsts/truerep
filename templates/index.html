@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TrueRep - Box Jump Counter</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+<body class="bg-black text-white overflow-hidden font-sans antialiased">
+    <!-- Video Container -->
+    <div id="video-container" class="relative w-screen h-screen">
+        <video id="webcam" autoplay playsinline muted
+            class="absolute top-0 left-0 w-full h-full object-cover transform -scale-x-100"></video>
+        <canvas id="output_canvas" class="absolute top-0 left-0 w-full h-full transform -scale-x-100"></canvas>
+
+        <!-- Glassmorphism Overlay -->
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none flex flex-col justify-between p-6 z-10">
+
+            <!-- Header -->
+            <div class="flex justify-between items-start">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-lg">
+                    <h1
+                        class="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
+                        TrueRep</h1>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mt-1">Box Jump Counter</p>
+                </div>
+
+                <!-- Status Badge -->
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-lg text-right">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">Status</span>
+                    <div id="status-indicator" class="text-xl font-bold text-yellow-400 mt-1">Aguardando...</div>
+                    <div class="text-xs text-gray-500 mt-1">Ângulo: <span id="angle-debug">0</span>°</div>
+                </div>
+            </div>
+
+            <!-- Center Counter -->
+            <div class="self-center text-center">
+                <div class="bg-black/20 backdrop-blur-sm rounded-full p-8 border border-white/5 shadow-2xl">
+                    <span class="text-sm text-gray-300 uppercase tracking-widest">Repetições</span>
+                    <div id="rep-count"
+                        class="text-9xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">0</div>
+                </div>
+            </div>
+
+            <!-- Controls Footer -->
+            <div class="pointer-events-auto flex justify-center gap-4 pb-8">
+                <button id="btn-start"
+                    class="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-bold text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        INICIAR
+                    </div>
+                </button>
+
+                <button id="btn-stop"
+                    class="hidden group relative px-8 py-4 bg-gradient-to-r from-red-500 to-orange-600 rounded-xl shadow-lg hover:shadow-red-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-bold text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        PARAR
+                    </div>
+                </button>
+
+                <button id="btn-reset"
+                    class="group relative px-6 py-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-semibold text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        ZERAR
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MediaPipe & App Logic -->
+    <script type="module" src="/static/js/vision.js?v=2"></script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/sw.js');
+        }
+    </script>
+</body>
+
+</html>

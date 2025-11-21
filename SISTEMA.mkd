@@ -1,0 +1,64 @@
+# ROLE
+Atue como um Engenheiro de Software Full Stack Sênior especialista em Visão Computacional e PWAs (Progressive Web Apps).
+
+# PROJETO: TrueRep
+Estamos criando um sistema web monolítico para contagem automática de "Box Jumps" (Saltos na Caixa) utilizando a webcam do dispositivo (mobile first).
+
+# STACK TECNOLÓGICA (Contexto 2025)
+- Backend: Python 3.12+ com FastAPI (framework moderno, rápido e assíncrono).
+- Frontend: HTML5, TailwindCSS (via CDN para simplicidade), JavaScript (Vanilla ES6+).
+- IA/Visão: MediaPipe Tasks Vision (JavaScript Bundle) rodando no cliente (browser) via WebAssembly/GPU.
+- Template Engine: Jinja2 (padrão do FastAPI).
+- Banco de Dados: SQLite (simples e local via SQLAlchemy).
+
+# REQUISITOS DO SISTEMA
+1. O sistema deve funcionar como um PWA (instalação no Android/iOS via navegador).
+2. A detecção de pose deve ocorrer no cliente (JavaScript) para evitar latência de rede.
+3. O Backend Python servirá apenas os arquivos estáticos, o HTML e terá um endpoint API simples `/api/save-session` para receber o total de repetições ao final do treino.
+
+# LÓGICA DO EXERCÍCIO (BOX JUMP)
+Implemente uma "Máquina de Estados" no JavaScript para contar a repetição válida:
+1. Estado INICIAL: Usuário no chão (Pés com coordenada Y baixa).
+2. Estado AÉREO: Pés sobem (coordenada Y diminui).
+3. Estado POUSO: Pés estabilizam em cima da caixa.
+4. Estado VALIDAÇÃO (A CONTAGEM): 
+   - O usuário deve estender o quadril.
+   - Calcule o ângulo entre Ombro-Quadril-Joelho.
+   - Se o ângulo for > 165 graus (corpo reto) E os pés estiverem na altura da caixa -> CONTA 1 REP.
+5. Estado RESET: Usuário volta ao chão.
+
+# ESTRUTURA DE ARQUIVOS (Organização Monolito Limpo)
+Sugira e implemente o código baseado nesta árvore:
+/truerep
+│
+├── /app
+│   ├── __init__.py
+│   ├── main.py          # Entry point do FastAPI
+│   ├── database.py      # Conexão SQLite
+│   ├── models.py        # Modelos do DB (Ex: Treino, Repeticoes)
+│   └── routes.py        # Rotas (Home e API)
+│
+├── /static
+│   ├── /css
+│   │   └── style.css    # Customizações além do Tailwind
+│   ├── /js
+│   │   ├── app.js       # Lógica PWA e UI
+│   │   └── vision.js    # Lógica do MediaPipe e contagem (Core)
+│   ├── /models
+│   │   └── pose_landmarker_full.task # Arquivo do modelo MediaPipe
+│   ├── manifest.json    # Configuração PWA
+│   └── sw.js            # Service Worker (Cache/Offline)
+│
+├── /templates
+│   └── index.html       # Interface única (Camera full screen + Overlay do contador)
+│
+└── requirements.txt
+
+# O QUE EU QUERO QUE VOCÊ GERE AGORA
+1. O conteúdo detalhado do `requirements.txt`.
+2. O código do `main.py` configurando o FastAPI, StaticFiles e Templates.
+3. O código crucial do `templates/index.html` (com a tag video e canvas sobrepostos).
+4. O código do `static/js/vision.js` implementando o MediaPipe `PoseLandmarker`, o cálculo trigonométrico do ângulo do quadril e a máquina de estados para contar o Box Jump.
+5. O código do `manifest.json` para garantir que a barra de navegação suma ao instalar no Android (`display: standalone`).
+
+Por favor, foque na lógica matemática do `vision.js` para garantir que a contagem seja precisa e não conte "falsos positivos". Use comentários explicativos no código.
