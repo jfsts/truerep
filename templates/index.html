@@ -8,6 +8,7 @@
     <link rel="manifest" href="/static/manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/css/style.css">
+</head>
 
 <body class="bg-black text-white overflow-hidden font-sans antialiased">
     <!-- Video Container -->
@@ -16,42 +17,52 @@
             class="absolute top-0 left-0 w-full h-full object-cover transform -scale-x-100"></video>
         <canvas id="output_canvas" class="absolute top-0 left-0 w-full h-full transform -scale-x-100"></canvas>
 
+        <!-- Visual Feedback Overlay -->
+        <div id="feedback-overlay"
+            class="absolute inset-0 pointer-events-none z-50 border-8 border-transparent transition-colors duration-200">
+        </div>
+
         <!-- Glassmorphism Overlay -->
-        <div class="absolute top-0 left-0 w-full h-full pointer-events-none flex flex-col justify-between p-6 z-10">
+        <div
+            class="absolute top-0 left-0 w-full h-full pointer-events-none flex flex-col justify-between p-4 md:p-6 z-10">
 
             <!-- Header -->
             <div class="flex justify-between items-start">
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-lg">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-3 md:p-4 shadow-lg">
                     <h1
-                        class="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
+                        class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
                         TrueRep</h1>
-                    <p class="text-xs text-gray-400 uppercase tracking-wider mt-1">Box Jump Counter</p>
+                    <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider mt-1">Box Jump Counter</p>
                 </div>
 
                 <!-- Status Badge -->
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-lg text-right">
-                    <span class="text-xs text-gray-400 uppercase tracking-wider">Status</span>
-                    <div id="status-indicator" class="text-xl font-bold text-yellow-400 mt-1">Aguardando...</div>
-                    <div class="text-xs text-gray-500 mt-1">Ângulo: <span id="angle-debug">0</span>°</div>
+                <div
+                    class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-3 md:p-4 shadow-lg text-right">
+                    <span class="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Status</span>
+                    <div id="status-indicator" class="text-lg md:text-xl font-bold text-yellow-400 mt-1">Aguardando...
+                    </div>
+                    <div class="text-[10px] md:text-xs text-gray-500 mt-1">Ângulo: <span id="angle-debug">0</span>°
+                    </div>
                 </div>
             </div>
 
             <!-- Center Counter -->
-            <div class="self-center text-center">
-                <div class="bg-black/20 backdrop-blur-sm rounded-full p-8 border border-white/5 shadow-2xl">
-                    <span class="text-sm text-gray-300 uppercase tracking-widest">Repetições</span>
+            <div class="self-center text-center mt-[-20%] md:mt-0">
+                <div class="bg-black/20 backdrop-blur-sm rounded-full p-6 md:p-8 border border-white/5 shadow-2xl">
+                    <span class="text-xs md:text-sm text-gray-300 uppercase tracking-widest">Repetições</span>
                     <div id="rep-count"
-                        class="text-9xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">0</div>
+                        class="text-7xl md:text-9xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                        0</div>
                 </div>
             </div>
 
             <!-- Controls Footer -->
-            <div class="pointer-events-auto flex justify-center gap-4 pb-8">
+            <div class="pointer-events-auto flex justify-center gap-3 md:gap-4 pb-4 md:pb-8">
                 <button id="btn-start"
-                    class="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
-                    <div class="flex items-center gap-2 font-bold text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                    class="group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-bold text-base md:text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -62,10 +73,10 @@
                 </button>
 
                 <button id="btn-stop"
-                    class="hidden group relative px-8 py-4 bg-gradient-to-r from-red-500 to-orange-600 rounded-xl shadow-lg hover:shadow-red-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
-                    <div class="flex items-center gap-2 font-bold text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                    class="hidden group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-red-500 to-orange-600 rounded-xl shadow-lg hover:shadow-red-500/30 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-bold text-base md:text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -74,14 +85,25 @@
                 </button>
 
                 <button id="btn-reset"
-                    class="group relative px-6 py-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 active:scale-95">
-                    <div class="flex items-center gap-2 font-semibold text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                    class="group relative px-4 py-3 md:px-6 md:py-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-semibold text-gray-300 text-sm md:text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                         ZERAR
+                    </div>
+                </button>
+
+                <button id="btn-camera"
+                    class="group relative px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:bg-gray-700/50 transition-all duration-300 hover:scale-105 active:scale-95">
+                    <div class="flex items-center gap-2 font-semibold text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
                     </div>
                 </button>
             </div>
@@ -89,7 +111,7 @@
     </div>
 
     <!-- MediaPipe & App Logic -->
-    <script type="module" src="/static/js/vision.js?v=3"></script>
+    <script type="module" src="/static/js/vision.js?v=5"></script>
     <script src="/static/js/app.js"></script>
 </body>
 
